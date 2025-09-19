@@ -37,6 +37,9 @@
             <h2>Gestión de Turnos</h2>
             <p>Asigne, modifique o cancele turnos para sus pacientes.</p>
             <form id="form-turno" onsubmit="return mostrarConfirmacion();">
+                <label for="codigo">Código del turno:</label><br>
+                <input type="text" id="codigo" name="codigo" required pattern="[1-9][0-9]*">
+                <div id="error-codigo" class="error">Ingrese un código numérico positivo y único.</div><br>
                 <label for="nombre">Nombre y Apellido:</label><br>
                 <input type="text" id="nombre" name="nombre" required>
                 <div id="error-nombre" class="error">Ingrese nombre y apellido válidos.</div><br>
@@ -69,6 +72,8 @@
                 <button type="submit">Solicitar Turno</button>
             </form>
             <div id="confirmacion" style="display:none; color:green; margin-top:10px;">¡Turno solicitado correctamente!</div>
+            <h3 style="margin-top:30px;">Turnos cargados</h3>
+            <div id="lista-turnos"></div>
         </section>
         <section id="profesionales" class="card">
             <h2>Profesionales</h2>
@@ -101,11 +106,28 @@
             });
         });
 
-        // Validación en tiempo real para nombre y DNI
+        // Validación en tiempo real para código, nombre y DNI
+        const codigoInput = document.getElementById('codigo');
+        const errorCodigo = document.getElementById('error-codigo');
         const nombreInput = document.getElementById('nombre');
         const dniInput = document.getElementById('dni');
         const errorNombre = document.getElementById('error-nombre');
         const errorDni = document.getElementById('error-dni');
+
+        // Validación de código: positivo y único
+        codigoInput.addEventListener('input', function() {
+            let valor = codigoInput.value.trim();
+            let esPositivo = /^[1-9][0-9]*$/.test(valor);
+            let esUnico = true;
+            if (window.manager && esPositivo) {
+                esUnico = !window.manager.obtenerTurnos().some(t => t.codigo === valor);
+            }
+            if (esPositivo && esUnico) {
+                errorCodigo.style.display = 'none';
+            } else {
+                errorCodigo.style.display = 'block';
+            }
+        });
 
         nombreInput.addEventListener('input', function() {
             if (/^[A-Za-zÁÉÍÓÚáéíóúÑñ ]{3,}$/.test(nombreInput.value)) {
@@ -115,7 +137,7 @@
             }
         });
         dniInput.addEventListener('input', function() {
-            if (/^\\d{7,8}$/.test(dniInput.value)) {
+            if (/^\d{7,8}$/.test(dniInput.value)) {
                 errorDni.style.display = 'none';
             } else {
                 errorDni.style.display = 'block';
@@ -140,4 +162,3 @@
     <script src="consultorio_odontologico.js"></script>
 </body>
 </html>
-
