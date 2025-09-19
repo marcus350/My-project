@@ -8,10 +8,18 @@
         body { font-family: Arial, sans-serif; background: #f7f7f7; margin: 0; }
         header { background: #0077b6; color: #fff; padding: 20px; text-align: center; }
         nav { background: #023e8a; padding: 10px; }
-        nav a { color: #fff; margin: 0 10px; text-decoration: none; }
+        nav a { color: #fff; margin: 0 10px; text-decoration: none; transition: color 0.3s; }
+        nav a:hover { color: #90e0ef; }
         main { padding: 20px; }
         footer { background: #0077b6; color: #fff; text-align: center; padding: 10px; position: fixed; width: 100%; bottom: 0; }
         .card { background: #fff; padding: 20px; margin: 20px 0; border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.1);}
+        input, select, button { font-size: 1rem; padding: 8px; border-radius: 5px; border: 1px solid #ccc; margin-bottom: 8px; }
+        input:focus, select:focus { outline: 2px solid #0077b6; }
+        button { background: #0077b6; color: #fff; border: none; cursor: pointer; transition: background 0.3s; }
+        button:hover { background: #023e8a; }
+        .error { color: #d90429; font-size: 0.95em; margin-bottom: 8px; display: none; }
+        #confirmacion { transition: opacity 0.7s; opacity: 0; }
+        #confirmacion.visible { opacity: 1; }
     </style>
 </head>
 <body>
@@ -30,9 +38,11 @@
             <p>Asigne, modifique o cancele turnos para sus pacientes.</p>
             <form id="form-turno" onsubmit="return mostrarConfirmacion();">
                 <label for="nombre">Nombre y Apellido:</label><br>
-                <input type="text" id="nombre" name="nombre" required><br><br>
+                <input type="text" id="nombre" name="nombre" required>
+                <div id="error-nombre" class="error">Ingrese nombre y apellido válidos.</div><br>
                 <label for="dni">DNI:</label><br>
-                <input type="text" id="dni" name="dni" required pattern="[0-9]{7,8}"><br><br>
+                <input type="text" id="dni" name="dni" required pattern="[0-9]{7,8}">
+                <div id="error-dni" class="error">DNI inválido. Debe tener 7 u 8 dígitos numéricos.</div><br>
                 <label for="obraSocial">Obra Social:</label><br>
                 <select id="obraSocial" name="obraSocial" required>
                     <option value="">Seleccione...</option>
@@ -69,7 +79,6 @@
             </ul>
         </section>
         <section id="contacto" class="card">
-
             <p>Dirección: Avenida Corrientes 2341, Ciudad Autónoma de Buenos Aires</p>
             <p>Teléfono: 1234-5678</p>
             <p>Email: info@sonrisasfelices.com</p>
@@ -77,16 +86,55 @@
     </main>
     <footer>
         &copy; 2025 Consultorio Odontológico Sonrisas Felices
-    <footer>
-        &copy; 2025 Consultorio Odontológico Sonrisas Felices
     </footer>
     <script>
-        function mostrarConfirmacion() {
-            document.getElementById('confirmacion').style.display = 'block';
-            setTimeout(function(){
-                document.getElementById('confirmacion').style.display = 'none';
-                document.getElementById('form-turno').reset();
-            }, 2500);
-            return false;
-        }
+    // Animación y validación en tiempo real
+    document.addEventListener('DOMContentLoaded', function() {
+        // Scroll suave en navegación
+        document.querySelectorAll('nav a').forEach(function(link) {
+            link.addEventListener('click', function(e) {
+                const href = link.getAttribute('href');
+                if (href.startsWith('#')) {
+                    e.preventDefault();
+                    document.querySelector(href).scrollIntoView({ behavior: 'smooth' });
+                }
+            });
+        });
+
+        // Validación en tiempo real para nombre y DNI
+        const nombreInput = document.getElementById('nombre');
+        const dniInput = document.getElementById('dni');
+        const errorNombre = document.getElementById('error-nombre');
+        const errorDni = document.getElementById('error-dni');
+
+        nombreInput.addEventListener('input', function() {
+            if (/^[A-Za-zÁÉÍÓÚáéíóúÑñ ]{3,}$/.test(nombreInput.value)) {
+                errorNombre.style.display = 'none';
+            } else {
+                errorNombre.style.display = 'block';
+            }
+        });
+        dniInput.addEventListener('input', function() {
+            if (/^\\d{7,8}$/.test(dniInput.value)) {
+                errorDni.style.display = 'none';
+            } else {
+                errorDni.style.display = 'block';
+            }
+        });
+    });
+
+    // Animación de confirmación
+    function mostrarConfirmacion() {
+        var confirmacion = document.getElementById('confirmacion');
+        confirmacion.classList.add('visible');
+        confirmacion.style.display = 'block';
+        setTimeout(function(){
+            confirmacion.classList.remove('visible');
+            confirmacion.style.display = 'none';
+            document.getElementById('form-turno').reset();
+        }, 2000);
+        return false;
+    }
     </script>
+</body>
+</html>
