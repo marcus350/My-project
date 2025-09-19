@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Consultorio Odontológico Sonrisas Felices</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        body { font-family: Arial, sans-serif; background: #f7f7f7; margin: 0; }
+        header { background: #0077b6; color: #fff; padding: 20px; text-align: center; }
+        nav { background: #023e8a; padding: 10px; }
+        nav a { color: #fff; margin: 0 10px; text-decoration: none; }
+        main { padding: 20px; }
+        footer { background: #0077b6; color: #fff; text-align: center; padding: 10px; position: fixed; width: 100%; bottom: 0; }
+        .card { background: #fff; padding: 20px; margin: 20px 0; border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.1);}
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Consultorio Odontológico Sonrisas Felices</h1>
+        <p>Bienvenido a nuestro sistema de gestión</p>
+    </header>
+    <nav>
+        <a href="#turnos">Turnos</a>
+        <a href="#profesionales">Profesionales</a>
+        <a href="#contacto">Contacto</a>
+    </nav>
+    <main>
+        <section id="turnos" class="card">
+            <h2>Gestión de Turnos</h2>
+            <p>Asigne, modifique o cancele turnos para sus pacientes.</p>
+            <form id="form-turno" onsubmit="return mostrarConfirmacion();">
+                <label for="nombre">Nombre y Apellido:</label><br>
+                <input type="text" id="nombre" name="nombre" required><br><br>
+                <label for="dni">DNI:</label><br>
+                <input type="text" id="dni" name="dni" required pattern="[0-9]{7,8}"><br><br>
+                <label for="obraSocial">Obra Social:</label><br>
+                <select id="obraSocial" name="obraSocial" required>
+                    <option value="">Seleccione...</option>
+                    <option value="OSDE">OSDE</option>
+                    <option value="SWISS">SWISS</option>
+                    <option value="PARTICULAR">PARTICULAR</option>
+                </select><br><br>
+                <label for="fecha">Fecha:</label><br>
+                <input type="date" id="fecha" name="fecha" required><br><br>
+                <label for="hora">Hora:</label><br>
+                <input type="time" id="hora" name="hora" min="08:00" max="17:59" required><br><br>
+                <label for="motivo">Motivo:</label><br>
+                <select id="motivo" name="motivo" required>
+                    <option value="Consulta">Consulta</option>
+                    <option value="Arreglo">Arreglo</option>
+                    <option value="Limpieza">Limpieza</option>
+                    <option value="Extracción">Extracción</option>
+                </select><br><br>
+                <label for="profesional">Profesional:</label><br>
+                <select id="profesional" name="profesional" required>
+                    <option value="López">Dr. López</option>
+                    <option value="Perez">Dr. Perez</option>
+                </select><br><br>
+                <button type="submit">Solicitar Turno</button>
+            </form>
+            <div id="confirmacion" style="display:none; color:green; margin-top:10px;">¡Turno solicitado correctamente!</div>
+        </section>
+        <section id="profesionales" class="card">
+            <h2>Profesionales</h2>
+            <img src="https://images.unsplash.com/photo-1515378791036-0648a3ef77b2?auto=format&fit=crop&w=400&q=80" alt="Consultorio Odontológico" style="width:100%;max-width:400px;border-radius:8px;box-shadow:0 2px 8px rgba(0,0,0,0.1);margin-bottom:15px;">
+            <ul>
+                <li>Dr. López</li>
+                <li>Dr. Perez</li>
+            </ul>
+        </section>
+        <section id="contacto" class="card">
+
+            <p>Dirección: Avenida Corrientes 2341, Ciudad Autónoma de Buenos Aires</p>
+            <p>Teléfono: 1234-5678</p>
+            <p>Email: info@sonrisasfelices.com</p>
+        </section>
+    </main>
+    <footer>
+        &copy; 2025 Consultorio Odontológico Sonrisas Felices
+    <footer>
+        &copy; 2025 Consultorio Odontológico Sonrisas Felices
+    </footer>
+    <script>
+        function mostrarConfirmacion() {
+            document.getElementById('confirmacion').style.display = 'block';
+            setTimeout(function(){
+                document.getElementById('confirmacion').style.display = 'none';
+                document.getElementById('form-turno').reset();
+            }, 2500);
+            return false;
+        }
+    </script>
