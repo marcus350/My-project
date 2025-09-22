@@ -74,13 +74,14 @@ function limpiarFormulario() {
 
 // Inicialización y eventos
 const manager = new TurnoManager();
+window.manager = manager; // Para validaciones en HTML
 document.addEventListener('DOMContentLoaded', function() {
     mostrarTurnos(manager.obtenerTurnos());
 
     document.getElementById('form-turno').addEventListener('submit', function(e) {
         e.preventDefault();
         const codigo = document.getElementById('codigo').value.trim();
-        const apellido = document.getElementById('nombre').value.trim();
+        const nombre = document.getElementById('nombre').value.trim();
         const dni = document.getElementById('dni').value.trim();
         const obraSocial = document.getElementById('obraSocial').value;
         let arancel = 0;
@@ -97,8 +98,8 @@ document.addEventListener('DOMContentLoaded', function() {
             alert('Código inválido o repetido.');
             return;
         }
-        if (!apellido.match(/^[A-Za-zÁÉÍÓÚáéíóúÑñ ]{3,}$/)) {
-            alert('Apellido inválido.');
+        if (!nombre.match(/^[A-Za-zÁÉÍÓÚáéíóúÑñ ]{3,}$/)) {
+            alert('Nombre y apellido inválidos.');
             return;
         }
         if (!dni.match(/^\d{7,8}$/)) {
@@ -115,7 +116,7 @@ document.addEventListener('DOMContentLoaded', function() {
             return;
         }
 
-        manager.agregarTurno({ codigo, apellido, dni, obraSocial, arancel, fecha, hora, motivo, profesional });
+        manager.agregarTurno({ codigo, apellido: nombre, dni, obraSocial, arancel, fecha, hora, motivo, profesional });
         mostrarTurnos(manager.obtenerTurnos());
         limpiarFormulario();
         document.getElementById('confirmacion').style.display = 'block';
